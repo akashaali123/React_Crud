@@ -6,6 +6,15 @@ const Home = () => {
 
     const [users, setUser] = useState([]);
 
+const onClick = id => {
+    axios.delete(`http://localhost:3333/users/${id}`).then(res => {
+            getUsers();
+        })
+            .catch(error => {
+                console.log("error {error}");
+            });
+};
+
     useEffect(() => {
         getUsers();
     }, []);
@@ -35,15 +44,15 @@ const Home = () => {
                 </thead>
                 <tbody>
                     {users.map((user,index)=>(
-                        <tr>
+                        <tr key={user.id}>
                         <th scope="row">{index+1}</th>
                         <td>{user.name}</td>
                         <td>{user.username}</td>
                         <td>{user.email}</td>
                         <td>
-                            <Link className="btn btn-primary mr-2">View</Link>
-                            <Link className="btn btn-outline-primary mr-2" to="/user/1">Edit</Link>
-                            <Link className="btn btn-danger ">Delete</Link>
+                            <Link className="btn btn-primary mr-2" to = {`/user/${user.id}`}>View</Link>
+                            <Link className="btn btn-outline-primary mr-2" to={`/user/${user.id}`}>Edit</Link>
+                            <button className="btn btn-danger" onClick={() => onClick(user.id)}>Delete</button>
                         </td>
                       </tr>
 
